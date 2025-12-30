@@ -143,6 +143,10 @@ This project aims to align with the following standards:
 | EU Regulation 2021/116 | Common Project One (CP1) | ✅ Implemented, ⏳ Pending Validation |
 | AIXM 5.1.1 | Aeronautical Information Exchange Model | ✅ Implemented, ⏳ Pending Validation |
 
+## Explore Mockserver
+
+[![Explore Mockserver](./docs/SwimDeveloper_003_Explore_Mockserver_Thumbnail.png)](https://youtu.be/wzbMA_M4FRM)
+
 ## License
 
 BSD 3-Clause License
