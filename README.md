@@ -138,10 +138,10 @@ This project aims to align with the following standards:
 
 | Standard | Description | Status |
 |----------|-------------|--------|
-| EUROCONTROL SPEC-170 | SWIM-TI Yellow Profile | ⏳ Pending Validation |
-| EUROCAE ED-254 | Service Interface Bindings | ⏳ Pending Validation |
-| EU Regulation 2021/116 | Common Project One (CP1) | ⏳ Pending Validation |
-| AIXM 5.1.1 | Aeronautical Information Exchange Model | ✅ Implemented |
+| EUROCONTROL SPEC-170 | SWIM-TI Yellow Profile | ✅ Implemented, ⏳ Pending Validation |
+| EUROCAE ED-254 | Service Interface Bindings | ✅ Implemented, ⏳ Pending Validation |
+| EU Regulation 2021/116 | Common Project One (CP1) | ✅ Implemented, ⏳ Pending Validation |
+| AIXM 5.1.1 | Aeronautical Information Exchange Model | ✅ Implemented, ⏳ Pending Validation |
 
 ## License
 
