@@ -1,156 +1,162 @@
-# SWIM DNOTAM MockServer
+# SWIM DNOTAM Mock Client
 
-> ⚠️ **Code Under Review**: Source code is currently under internal review and will be available soon.
+> ⚠️ **Code Under Review** — This repository is part of a reference implementation currently under technical review. Source code will be available soon.
 
-Simulates the EUROCONTROL EAD (European AIS Database) for local development and testing of SWIM DNOTAM services.
+Interactive web client for testing and demonstrating SWIM DNOTAM Provider integration. Provides a complete UI for subscription management, AMQP message consumption, and real-time event visualization with Europe map overlay.
 
-## What It Does
+![Architecture](references/mockclient-architecture.svg)
 
-The MockServer provides a simulation environment for validating DNOTAM Consumer implementations without requiring access to production EUROCONTROL infrastructure.
+## Overview
 
-![MockServer Architecture](./docs/mockserver-architecture.svg)
+The Mock Client simulates an ANSP (Air Navigation Service Provider) consumer workstation, enabling operators to:
 
-**Components:**
-- **Subscription Manager API** — ED-254 compliant REST endpoints
-- **ActiveMQ Artemis Broker** — AMQP 1.0 message broker (deployed separately)
-- **Event Generator** — Configurable cron-based AIXM event injection
-- **82 Sample Events** — Validated examples for common scenarios
+- **Authenticate** via Keycloak (OAuth2/OIDC)
+- **Create/Manage Subscriptions** through Provider REST API
+- **Connect to AMQP Broker** and consume DNOTAM events
+- **Visualize Events** on an interactive Europe map
+- **Inspect Messages** with syntax-highlighted AIXM XML viewer
 
-## Sample Event Scenarios
+## Features
 
-The MockServer includes validated AIXM sample events for the following scenarios. The framework supports any valid AIXM 5.1.1 event.
-
-| Scenario | Code | Description |
-|----------|------|-------------|
-| Runway Closure | `RWY.CLS` | Temporary/permanent runway closures |
-| Aerodrome Closure | `AD.CLS` | Airport closures |
-| Taxiway Closure | `TWY.CLS` | Taxiway closures |
-| Runway Limitation | `RWY.LIM` | Weight/performance restrictions |
-| Aerodrome Limitation | `AD.LIM` | Airport restrictions |
-| Surface Condition | `SFC.CON` | Runway contamination |
-| Airspace Activation | `SAA.ACT` | Restricted area activation |
-| Airspace New | `SAA.NEW` | New airspace definitions |
-| Obstacle New | `OBS.NEW` | New obstacles |
-| Navaid Unserviceable | `NAV.UNS` | Navigation aid failures |
-
-## Quick Start
-
-### Using the Operator (Recommended)
-
-kind: SwimDnotamMockServer
-apiVersion: apps.swim-developer.github.io/v1alpha1
-metadata:
-  name: mockserver
-spec:
-  appConfig:
-    amqp:
-      password: admin
-      port: 5672
-      username: admin
-  certManager:
-    issuerName: swim-ca-issuer
-    issuerKind: ClusterIssuer
-  replicaCount: 1### Container Image
-
-podman pull quay.io/masales/swim-dnotam-mockserver:latest## API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/swim/v1/subscriptions` | Create subscription (returns PAUSED) |
-| `GET` | `/swim/v1/subscriptions` | List subscriptions |
-| `GET` | `/swim/v1/subscriptions/{id}` | Get subscription details |
-| `PUT` | `/swim/v1/subscriptions/{id}` | Update status (ACTIVE/PAUSED) |
-| `DELETE` | `/swim/v1/subscriptions/{id}` | Delete subscription |
-| `GET` | `/swim/v1/topics` | List available topics |
-| `GET` | `/swim/v1/topics/{id}` | Get topic details |
-
-## Environment Variables
-
-### HTTP/HTTPS Configuration
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `QUARKUS_HTTP_PORT` | `8080` | HTTP port (health checks) |
-| `QUARKUS_HTTP_SSL_PORT` | `8443` | HTTPS port (API traffic) |
-| `QUARKUS_HTTP_INSECURE_REQUESTS` | `disabled` | Allow HTTP requests (`enabled`/`disabled`) |
-
-### SSL/TLS Certificates
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `QUARKUS_HTTP_SSL_CERTIFICATE_FILES` | `/certs/server/tls.crt` | Server certificate path |
-| `QUARKUS_HTTP_SSL_CERTIFICATE_KEY_FILES` | `/certs/server/tls.key` | Server private key path |
-| `QUARKUS_HTTP_SSL_CERTIFICATE_TRUST_STORE_FILE` | `/certs/ca/ca.crt` | CA certificate for client validation |
-| `QUARKUS_HTTP_SSL_CERTIFICATE_TRUST_STORE_FILE_TYPE` | `PEM` | Trust store format (`PEM`/`JKS`/`PKCS12`) |
-
-### OpenAPI Configuration
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `MP_OPENAPI_SERVERS` | *(see below)* | Comma-separated list of server URLs |
-| `MP_OPENAPI_SERVERS_0_DESCRIPTION` | `MockServer (Development/Testing)` | Description for first server |
-| `MP_OPENAPI_SERVERS_1_DESCRIPTION` | `Local Development` | Description for second server |
-
-### Event Generator Configuration
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `EVENT_GENERATOR_ENABLED` | `true` | Enable automatic event generation |
-| `EVENT_GENERATOR_SCHEDULE` | `0 */1 * * * ?` | Cron expression (default: every 1 minute) |
-| `EVENT_GENERATOR_EVENTS_PATH` | `/opt/events` | Path to AIXM event XML files |
-
-**Cron Expression Format**: `second minute hour day month weekday`
-
-Examples:
-- `0 */1 * * * ?` — Every 1 minute
-- `0 */5 * * * ?` — Every 5 minutes
-- `0 0 */1 * * ?` — Every 1 hour
-- `0 30 9 * * ?` — Daily at 09:30
-
-### AMQP Broker Configuration
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `AMQP_BROKER_HOST` | `mockserver-artemis-hdls-svc` | Artemis broker hostname |
-| `AMQP_BROKER_PORT` | `5672` | AMQP 1.0 port |
-| `AMQP_BROKER_USERNAME` | `admin` | AMQP authentication username |
-| `AMQP_BROKER_PASSWORD` | `admin` | AMQP authentication password |
-
-### Logging
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `QUARKUS_LOG_LEVEL` | `INFO` | Log level (`TRACE`/`DEBUG`/`INFO`/`WARN`/`ERROR`) |
-
-## Technology Stack
-
-| Component | Technology |
-|-----------|------------|
-| Runtime | Quarkus (Native/JVM) |
-| Broker | ActiveMQ Artemis |
-| Protocol | AMQP 1.0 over TLS 1.2/1.3 |
-| Data Model | AIXM 5.1.1 |
-| Security | mTLS (Mutual TLS) |
+| Feature | Description |
+|---------|-------------|
+| **Keycloak Integration** | OAuth2/OIDC authentication with token management |
+| **Provider API Proxy** | Backend proxy with mTLS for secure Provider communication |
+| **AMQP Consumer** | Vert.x-based client with per-user connection management |
+| **Real-time Console** | Server-Sent Events (SSE) for live operation feedback |
+| **Message Persistence** | MariaDB storage for received DNOTAM events |
+| **Event Map** | SVG-based Europe map with event markers and clustering |
+| **AIXM Viewer** | Prism.js syntax highlighting for XML inspection |
+| **Event Injection** | REST endpoint for testing with custom AIXM payloads |
 
 ## Standards Alignment
 
-This project aims to align with the following standards:
+| Standard | Status |
+|----------|--------|
+| SWIM-TI Yellow Profile | ✅ Implemented, ⏳ Pending Validation |
+| AMQP 1.0 over TLS 1.2/1.3 | ✅ Implemented |
+| mTLS Client Authentication | ✅ Implemented |
+| OAuth2/OIDC (Keycloak) | ✅ Implemented |
 
-| Standard | Description | Status |
-|----------|-------------|--------|
-| EUROCONTROL SPEC-170 | SWIM-TI Yellow Profile | ✅ Implemented, ⏳ Pending Validation |
-| EUROCAE ED-254 | Service Interface Bindings | ✅ Implemented, ⏳ Pending Validation |
-| EU Regulation 2021/116 | Common Project One (CP1) | ✅ Implemented, ⏳ Pending Validation |
-| AIXM 5.1.1 | Aeronautical Information Exchange Model | ✅ Implemented, ⏳ Pending Validation |
+## Technology Stack
 
-## Explore Mockserver
+- **Runtime**: Quarkus 3.30 (Java 21)
+- **UI**: Qute Templates + Vanilla JavaScript
+- **AMQP**: Vert.x AMQP Client
+- **HTTP Client**: Vert.x Web Client
+- **Database**: MariaDB (Hibernate ORM)
+- **SSE**: Mutiny Reactive Streams
 
-[![Explore Mockserver](./docs/SwimDeveloper_003_Explore_Mockserver_Thumbnail.png)](https://youtu.be/wzbMA_M4FRM)
+## UI Pages
+
+| Page | Path | Description |
+|------|------|-------------|
+| Dashboard | `/ui` | Overview and authentication status |
+| Provider API | `/ui/api` | Subscription management interface |
+| Token | `/ui/token` | JWT token inspection and refresh |
+| Console | `/ui/console` | Real-time operation logs (SSE) |
+| AMQP | `/ui/amqp` | Broker connection and queue management |
+| Messages | `/ui/messages` | Received DNOTAM events list |
+| Subscriptions | `/ui/subscriptions` | Active subscription management |
+
+## REST API
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/config/keycloak` | GET | Keycloak configuration for frontend |
+| `/api/config/provider` | GET | Provider API URLs |
+| `/api/status` | GET | mTLS and connection status |
+| `/api/console/stream` | GET | SSE stream for console events |
+| `/api/user/messages` | GET | User's received messages |
+| `/api/messages/{id}/xml` | GET | Formatted XML view |
+| `/api/messages/{id}/download` | GET | Download AIXM XML file |
+| `/api/events/inject` | POST | Inject test DNOTAM event |
+| `/api/map/events` | GET | SVG map with event markers |
+| `/api/map/events.html` | GET | Interactive map page |
+
+## Configuration
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `QUARKUS_HTTP_PORT` | `8080` | HTTP server port |
+| `KEYCLOAK_URL` | `https://rhbk.apps.ocp4.masales.cloud` | Keycloak server URL |
+| `KEYCLOAK_REALM` | `swim` | Keycloak realm name |
+| `KEYCLOAK_CLIENT_ID` | `swim-public-client` | OAuth2 client ID |
+| `SWIM_PROVIDER_API_URLS` | - | Comma-separated Provider API URLs |
+| `SWIM_PROVIDER_AMQP_HOST` | - | AMQP broker hostname |
+| `SWIM_PROVIDER_AMQP_PORT` | `443` | AMQP broker port |
+| `PROXY_MTLS_KEYSTORE_PATH` | `certs/keystore.p12` | Client certificate keystore |
+| `PROXY_MTLS_KEYSTORE_PASSWORD` | `changeit` | Keystore password |
+| `PROXY_MTLS_KEYSTORE_TYPE` | `PKCS12` | Keystore type (PKCS12/JKS) |
+| `PROXY_MTLS_TRUSTSTORE_PATH` | `certs/truststore.p12` | Trust store for CA certificates |
+| `PROXY_MTLS_TRUSTSTORE_PASSWORD` | `changeit` | Truststore password |
+| `PROXY_MTLS_TRUSTSTORE_TYPE` | `PKCS12` | Truststore type (PKCS12/JKS) |
+| `MARIADB_HOST` | `localhost` | MariaDB hostname |
+| `MARIADB_PORT` | `3306` | MariaDB port |
+| `MARIADB_DATABASE` | `swim_client` | Database name |
+| `MARIADB_USERNAME` | `swim` | Database username |
+| `MARIADB_PASSWORD` | `swim` | Database password |
+
+## Health Checks
+
+| Endpoint | Description |
+|----------|-------------|
+| `/q/health/live` | Liveness probe |
+| `/q/health/ready` | Readiness probe |
+| `/q/health` | Combined health status |
+
+## Operator Deployment
+
+Deploy using the SWIM Operator:
+```yaml
+apiVersion: apps.swim-developer.github.io/v1alpha1
+kind: SwimDnotamMockClient
+metadata:
+  name: dnotam-mockclient
+spec:
+  keycloak:
+    url: "https://rhbk.apps.ocp4.masales.cloud/"
+    realm: "swim"
+    clientId: "swim-public-client"
+  providerAPIURLs: "https://swim-dnotam-provider-mtls-swim-sandbox.apps.ocp4.masales.cloud"
+  amqp:
+    host: "provider-artemis-swim-sandbox.apps.ocp4.masales.cloud"
+    port: 443
+  mtls:
+    enabled: true
+    certsSecretName: "swim-dnotam-client-tls"
+    passwordsSecretName: "swim-dnotam-mockclient-passwords"
+```
+
+## Local Development
+
+### Start with dev services (MariaDB auto-provisioned)
+./mvnw quarkus:dev
+
+### Access UI
+open http://localhost:8085/ui
+
+### Build
+
+#### JVM build
+./mvnw clean package -DskipTests
+
+#### Native build
+./mvnw clean package -DskipTests -Pnative
+
+#### Container image
+./mvnw clean package -DskipTests -Dquarkus.container-image.build=true
+
+## Event Injection
+
+Test the system by injecting AIXM events directly:
+```shell
+curl -X POST http://localhost:8085/api/events/inject \
+  -H "Content-Type: application/aixm+xml" \
+  -d @sample-runway-closure.xml
+```
 
 ## License
-
 BSD 3-Clause License
-
----
-
-Part of the [swim-developer](https://swim-developer.github.io) initiative.
