@@ -4,7 +4,7 @@
 
 Interactive web client for testing and demonstrating SWIM DNOTAM Provider integration. Provides a complete UI for subscription management, AMQP message consumption, and real-time event visualization with Europe map overlay.
 
-![Architecture](.docs/mockclient-architecture.svg)
+![Mockclient Architecture](./docs/mockclient-architecture.svg)
 
 ## Overview
 
