@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 920 620" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <style type="text/css">
+            @import url('https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;500;600;700&amp;family=Red+Hat+Display:wght@400;700&amp;display=swap');
+        </style>
+        <marker id="arrowhead" markerWidth="6" markerHeight="5" refX="5" refY="2.5" orient="auto">
+            <polygon points="0 0, 6 2.5, 0 5" fill="#90a4ae"/>
+        </marker>
+        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+        </filter>
+    </defs>
+
+    <!-- Title with Badge -->
+    <text x="460" y="30" text-anchor="middle" fill="#c2185b" font-weight="700" font-size="22" font-family="'Red Hat Display', sans-serif">SWIM DNOTAM Mock Client</text>
+    <rect x="680" y="15" width="180" height="24" rx="12" fill="#ffc107"/>
+    <text x="770" y="32" text-anchor="middle" fill="#000" font-weight="600" font-size="11" font-family="'Red Hat Text', sans-serif">SWIM-TI Yellow Profile</text>
+    <text x="460" y="52" text-anchor="middle" fill="#f48fb1" font-size="14" font-family="'Red Hat Text', sans-serif">Interactive Test Client &amp; Visualization</text>
+
+    <!-- ==================== INTERNAL ENVIRONMENT BOX (Left Side) ==================== -->
+    <rect x="20" y="80" width="580" height="520" rx="12" fill="none" stroke="#c2185b" stroke-width="2"/>
+    <rect x="20" y="80" width="580" height="34" rx="12" fill="#c2185b"/>
+    <rect x="20" y="107" width="580" height="7" fill="#c2185b"/>
+    <text x="310" y="105" text-anchor="middle" fill="#ffffff" font-weight="700" font-size="15" font-family="'Red Hat Display', sans-serif">Internal Environment — Test Client</text>
+
+    <!-- ==================== MARIADB (Left inside Internal - lower position) ==================== -->
+    <rect x="40" y="280" width="180" height="150" rx="8" fill="#424242" stroke="#757575" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="40" y="280" width="180" height="30" rx="8" fill="#757575"/>
+    <rect x="40" y="302" width="180" height="8" fill="#757575"/>
+    <text x="130" y="302" text-anchor="middle" fill="#fff" font-weight="600" font-size="14" font-family="'Red Hat Text', sans-serif">MariaDB</text>
+    <text x="130" y="340" text-anchor="middle" fill="#e0e0e0" font-size="13" font-family="'Red Hat Text', sans-serif">received_messages</text>
+    <text x="130" y="370" text-anchor="middle" fill="#e0e0e0" font-size="13" font-family="'Red Hat Text', sans-serif">subscriptions</text>
+    <text x="130" y="400" text-anchor="middle" fill="#e0e0e0" font-size="13" font-family="'Red Hat Text', sans-serif">user_amqp_configs</text>
+
+    <!-- ==================== MOCKCLIENT BOX (Right inside Internal Environment) ==================== -->
+    <rect x="260" y="130" width="320" height="450" rx="12" fill="none" stroke="#e91e63" stroke-width="2"/>
+    <rect x="260" y="130" width="320" height="34" rx="12" fill="#e91e63"/>
+    <rect x="260" y="157" width="320" height="7" fill="#e91e63"/>
+    <text x="420" y="155" text-anchor="middle" fill="#ffffff" font-weight="700" font-size="16" font-family="'Red Hat Display', sans-serif">DNOTAM MockClient</text>
+
+    <!-- Quarkus + Cloud-Native badges -->
+    <rect x="280" y="175" width="75" height="20" rx="10" fill="#4695eb"/>
+    <text x="317" y="190" text-anchor="middle" fill="#fff" font-weight="600" font-size="10" font-family="'Red Hat Text', sans-serif">Quarkus</text>
+    <rect x="365" y="175" width="90" height="20" rx="10" fill="#0db7ed"/>
+    <text x="410" y="190" text-anchor="middle" fill="#fff" font-weight="600" font-size="10" font-family="'Red Hat Text', sans-serif">Cloud-Native</text>
+
+    <!-- Web UI (Qute) -->
+    <rect x="280" y="210" width="280" height="70" rx="6" fill="#fce4ec" stroke="#c2185b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="420" y="240" text-anchor="middle" fill="#880e4f" font-weight="600" font-size="14" font-family="'Red Hat Text', sans-serif">Web UI (Qute Templates)</text>
+    <text x="420" y="262" text-anchor="middle" fill="#ad1457" font-size="11" font-family="'Red Hat Text', sans-serif">Dashboard | API | Token | Console | Messages</text>
+
+    <!-- API Proxy (stacked above AMQP Consumer) -->
+    <rect x="280" y="310" width="280" height="60" rx="6" fill="#fce4ec" stroke="#c2185b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="420" y="340" text-anchor="middle" fill="#880e4f" font-weight="600" font-size="14" font-family="'Red Hat Text', sans-serif">API Proxy</text>
+    <text x="420" y="360" text-anchor="middle" fill="#ad1457" font-size="11" font-family="'Red Hat Text', sans-serif">Vert.x HTTP Client (mTLS)</text>
+
+    <!-- AMQP Consumer (stacked below API Proxy) -->
+    <rect x="280" y="400" width="280" height="60" rx="6" fill="#fce4ec" stroke="#c2185b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="420" y="430" text-anchor="middle" fill="#880e4f" font-weight="600" font-size="14" font-family="'Red Hat Text', sans-serif">AMQP Consumer</text>
+    <text x="420" y="450" text-anchor="middle" fill="#ad1457" font-size="11" font-family="'Red Hat Text', sans-serif">Vert.x AMQP Client (mTLS)</text>
+
+    <!-- Message Service + Map Service -->
+    <rect x="280" y="490" width="130" height="70" rx="6" fill="#fce4ec" stroke="#c2185b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="345" y="520" text-anchor="middle" fill="#880e4f" font-weight="600" font-size="14" font-family="'Red Hat Text', sans-serif">Message Service</text>
+    <text x="345" y="545" text-anchor="middle" fill="#ad1457" font-size="11" font-family="'Red Hat Text', sans-serif">AIXM Parser</text>
+
+    <rect x="430" y="490" width="130" height="70" rx="6" fill="#fce4ec" stroke="#c2185b" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="495" y="520" text-anchor="middle" fill="#880e4f" font-weight="600" font-size="14" font-family="'Red Hat Text', sans-serif">Map Service</text>
+    <text x="495" y="545" text-anchor="middle" fill="#ad1457" font-size="11" font-family="'Red Hat Text', sans-serif">Europe SVG</text>
+
+    <!-- ==================== EXTERNAL SERVICES (Right Side) ==================== -->
+
+    <!-- Keycloak -->
+    <rect x="720" y="100" width="160" height="100" rx="8" fill="#5c6bc0" stroke="#3949ab" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="720" y="100" width="160" height="30" rx="8" fill="#3949ab"/>
+    <rect x="720" y="122" width="160" height="8" fill="#3949ab"/>
+    <text x="800" y="122" text-anchor="middle" fill="#fff" font-weight="600" font-size="14" font-family="'Red Hat Text', sans-serif">Keycloak</text>
+    <text x="800" y="155" text-anchor="middle" fill="#c5cae9" font-size="12" font-family="'Red Hat Text', sans-serif">OAuth2 / OIDC</text>
+    <text x="800" y="180" text-anchor="middle" fill="#9fa8da" font-size="11" font-family="'Red Hat Text', sans-serif">JWT Token Provider</text>
+
+    <!-- Provider REST API -->
+    <rect x="720" y="250" width="160" height="100" rx="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="720" y="250" width="160" height="30" rx="8" fill="#2e7d32"/>
+    <rect x="720" y="272" width="160" height="8" fill="#2e7d32"/>
+    <text x="800" y="272" text-anchor="middle" fill="#fff" font-weight="600" font-size="14" font-family="'Red Hat Text', sans-serif">Provider API</text>
+    <text x="800" y="305" text-anchor="middle" fill="#1b5e20" font-size="12" font-family="'Red Hat Text', sans-serif">REST (mTLS)</text>
+    <text x="800" y="330" text-anchor="middle" fill="#2e7d32" font-size="11" font-family="'Red Hat Text', sans-serif">Subscription Manager</text>
+
+    <!-- AMQP Broker -->
+    <rect x="720" y="400" width="160" height="100" rx="8" fill="#fff3e0" stroke="#f57c00" stroke-width="2" filter="url(#shadow)"/>
+    <rect x="720" y="400" width="160" height="30" rx="8" fill="#f57c00"/>
+    <rect x="720" y="422" width="160" height="8" fill="#f57c00"/>
+    <text x="800" y="422" text-anchor="middle" fill="#fff" font-weight="600" font-size="14" font-family="'Red Hat Text', sans-serif">AMQP Broker</text>
+    <text x="800" y="455" text-anchor="middle" fill="#e65100" font-size="12" font-family="'Red Hat Text', sans-serif">AMQP 1.0 (mTLS)</text>
+    <text x="800" y="480" text-anchor="middle" fill="#ff9800" font-size="11" font-family="'Red Hat Text', sans-serif">DNOTAM Events</text>
+
+    <!-- ==================== ARROWS ==================== -->
+
+    <!-- MockClient to Keycloak -->
+    <line x1="585" y1="150" x2="715" y2="150" stroke="#7986cb" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrowhead)"/>
+
+    <!-- API Proxy to Provider API -->
+    <line x1="565" y1="340" x2="715" y2="300" stroke="#90a4ae" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- AMQP Consumer to AMQP Broker -->
+    <line x1="565" y1="430" x2="715" y2="450" stroke="#90a4ae" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- Web UI to API Proxy -->
+    <line x1="420" y1="285" x2="420" y2="305" stroke="#90a4ae" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- API Proxy to AMQP Consumer -->
+    <line x1="420" y1="375" x2="420" y2="395" stroke="#90a4ae" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- AMQP Consumer to Message Service -->
+    <line x1="345" y1="465" x2="345" y2="485" stroke="#90a4ae" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- AMQP Consumer to Map Service -->
+    <line x1="495" y1="465" x2="495" y2="485" stroke="#90a4ae" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+    <!-- API Proxy to MariaDB (horizontal) -->
+    <line x1="275" y1="340" x2="225" y2="340" stroke="#90a4ae" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+</svg>
